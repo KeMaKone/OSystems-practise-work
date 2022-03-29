@@ -1,6 +1,6 @@
 ## Lore
 
-Sivu jokaisesta valitusta osiosta. Valitaan kolme projektia.
+Sivu jokaisesta valitusta osiosta. 
 
 ## Valitut projektit:
 # Project 2: Unix Utilities
@@ -10,7 +10,4 @@ Sivu jokaisesta valitusta osiosta. Valitaan kolme projektia.
 
 
 # Project 4: Kernel Hacking
-
-
-# Project 5: Parallel Zip
 
