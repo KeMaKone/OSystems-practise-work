@@ -5,33 +5,7 @@
 #include <wait.h>
 #include <fcntl.h>
 #include <time.h>
-
-#define BUFSIZE 256
-#define PATHSIZE 256
-#define LOGOUTITME 60
-#define PROMPT "wish> "
-#define DEFFAULTPATH "/bin"
-
-void autoLogout(){
-    printf("You have been logged out due to inactivity.\n");
-    exit(0);
-}
-
-void welcomeText(){
-    printf("Welcome to the wish shell.\n");
-    printf("Autologout has bee set to %d seconds.\n", LOGOUTITME);
-    printf("Type 'help' for a list of commands.\n");
-    return;
-}
-
-void helpText(){
-    printf("Available commands:\n");
-    printf("'help' - Prints this help text.\n");
-    printf("'cd' - Changes the current working directory.\n");
-    printf("'path' - Sets a new path.\n");
-    printf("'exit' - Exits the shell.\n");
-    return;
-}
+#include "wish.h"
 
 void errorHandle(){
     char* errMsg = "An error has occurred\n";
@@ -72,25 +46,15 @@ int changeDirectory(char* tokens[]){
 }
 
 int setPath(char* tokens[], char* path[]){
-    int i, j;
-
     if(tokens[1] == NULL){
         printf("No path specified.\n");
         return 1;
     }
 
-    //Get the index of next available slot
-    for(i=0; path[i] !=NULL; i++)
-
-    //Write tokens to path
-    for(j=0; tokens[1 + j] != NULL; ) path[i + j] = tokens[1 + j];
+    //Write Tokens to path
+    for(int i=0; tokens[i+1] != NULL; i++) strcpy(path[i], tokens[i+1]);
 
     return 0;
-}
-
-int exitShell(){
-    printf("Exiting shell...\n");
-    exit(0);
 }
 
 
@@ -111,15 +75,47 @@ int handleShellCommands(char* tokens[], char* path[]){
     return -1;
 }
 
+int checkPath(char* tokens[], char* path[]){
+    char checkPath[PATHLENGTH];
+    for(int i=0; path[i] != NULL ;i++){
+        strcpy(checkPath, path[i]);
+        strcat(checkPath, "/");
+        strcat(checkPath, tokens[0]);
+        if(access(checkPath, F_OK)==0){
+            return(0);
+        }
+    }
+    printf("Command not in path\n");
+    return(-1);
+}
+
+int handleExternalCommands(char* tokens[], char* path[], int* bgFlag){
+    int pid;
+    //fork
+    switch(pid = fork()){
+        case -1:
+            errorHandle();
+        case 0:
+            if(checkPath(tokens, path) == 0) if(execvp(tokens[0], tokens) == -1) errorHandle();
+        default:
+            if(bgFlag == 0) if(wait(&pid) == -1) errorHandle();
+    }
+
+    return(0);
+}
+
 //shell 
 int main(){
-    char inputBuffer[BUFSIZE];
-    char* tokens[BUFSIZE]; //TODO CHANGE TOKENS TO LINKED LIST
-    char* path[PATHSIZE]; 
+    char inputBuffer[BUFSIZE]; 
+    char* tokens[BUFSIZE];  //TODO CHANGE TOKENS TO LINKED LIST
+    char* path[PATHSIZE]; //TODO CHANGE PATH TO LINKED LIST
     int iaFlag = 1;
     int bgFlag = 0;
-    int pid;
 
+    //clear arrays
+    memset(inputBuffer, 0, BUFSIZE*sizeof(char));
+    memset(tokens, 0, BUFSIZE*__SIZEOF_POINTER__);
+    memset(path, 0, PATHSIZE*__SIZEOF_POINTER__);
 
     path[0] = DEFFAULTPATH;
 
@@ -129,7 +125,7 @@ int main(){
 
     //shell loop
     while(1){
-        alarm(LOGOUTITME); //autologout
+        //alarm(LOGOUTITME); //autologout
         
         if(iaFlag != 0) printf(PROMPT);
 
@@ -137,18 +133,15 @@ int main(){
         parseInput(inputBuffer, tokens);
         
         //debug parse
-        for(int i =0;tokens[i] != NULL;i++) printf("%s-", tokens[i]);       
+        for(int i =0;tokens[i] != NULL;i++) printf("%s", tokens[i]);
+        puts("");       
 
-        if(handleShellCommands(tokens, path) == 0) continue;
-        
-        //fork
-        switch(pid = fork()){
-            case -1:
-                errorHandle();
-            case 0:
-                if(execvp(tokens[0], tokens) == -1) errorHandle();
-            default:
-                if(bgFlag == 0) if(wait(&pid) == -1) errorHandle();
+        if(handleShellCommands(tokens, path) != 0){
+            handleExternalCommands(tokens, path, &bgFlag);
         }
+
+        //clearing buffers
+        memset(inputBuffer, 0, BUFSIZE*sizeof(char));
+        memset(tokens, 0, BUFSIZE*__SIZEOF_POINTER__);
     }
 }
