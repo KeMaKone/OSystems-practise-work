@@ -8,6 +8,8 @@ Sivu jokaisesta valitusta osiosta.
 
 # Project 3: Unix Shell
 
+Path could be done with envpath which would be better and easier coding.
+
 
 # Project 4: Kernel Hacking
 

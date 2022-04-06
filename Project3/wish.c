@@ -7,8 +7,10 @@
 #include <time.h>
 
 #define BUFSIZE 256
+#define PATHSIZE 256
 #define LOGOUTITME 60
 #define PROMPT "wish> "
+#define DEFFAULTPATH "/bin"
 
 void autoLogout(){
     printf("You have been logged out due to inactivity.\n");
@@ -69,13 +71,19 @@ int changeDirectory(char* tokens[]){
     return 0;
 }
 
-int setPath(char* tokens[]){
+int setPath(char* tokens[], char* path[]){
+    int i, j;
+
     if(tokens[1] == NULL){
         printf("No path specified.\n");
         return 1;
     }
 
-    if(setenv("PATH", tokens[1], 1) == -1) errorHandle();
+    //Get the index of next available slot
+    for(i=0; path[i] !=NULL; i++)
+
+    //Write tokens to path
+    for(j=0; tokens[1 + j] != NULL; ) path[i + j] = tokens[1 + j];
 
     return 0;
 }
@@ -87,7 +95,7 @@ int exitShell(){
 
 
 //TODO Nice to have: handle uppers and lowers
-int handleShellCommands(char* tokens[]){
+int handleShellCommands(char* tokens[], char* path[]){
     if(strcmp(tokens[0], "exit") == 0){
         exitShell();
     } else if(strcmp(tokens[0], "help") == 0){
@@ -97,7 +105,7 @@ int handleShellCommands(char* tokens[]){
         changeDirectory(tokens);
         return(0);
     } else if(strcmp(tokens[0], "path") == 0){
-        setPath(tokens);
+        setPath(tokens, path);
         return(0);
     }
     return -1;
@@ -107,9 +115,13 @@ int handleShellCommands(char* tokens[]){
 int main(){
     char inputBuffer[BUFSIZE];
     char* tokens[BUFSIZE]; //TODO CHANGE TOKENS TO LINKED LIST
+    char* path[PATHSIZE]; 
     int iaFlag = 1;
     int bgFlag = 0;
     int pid;
+
+
+    path[0] = DEFFAULTPATH;
 
     signal(SIGALRM, autoLogout);
 
@@ -123,19 +135,20 @@ int main(){
 
         readInput(inputBuffer, stdin);
         parseInput(inputBuffer, tokens);
+        
+        //debug parse
+        for(int i =0;tokens[i] != NULL;i++) printf("%s-", tokens[i]);       
 
-        if(handleShellCommands(tokens) == 0) continue;
+        if(handleShellCommands(tokens, path) == 0) continue;
         
         //fork
         switch(pid = fork()){
             case -1:
-                perror("fork");
+                errorHandle();
             case 0:
                 if(execvp(tokens[0], tokens) == -1) errorHandle();
-                break;
             default:
                 if(bgFlag == 0) if(wait(&pid) == -1) errorHandle();
-                break;
         }
     }
 }
