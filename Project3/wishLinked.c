@@ -29,10 +29,12 @@ char* getValue(Node_t* head, int index){
     return current->value;
 }
 
-//form array of strings from linked list
-void getArray(Node_t* head, char* argv[]){
+//form array of strings from linked list for n tokens
+void getArray(Node_t* head, char* argv[], int index){
     Node_t* current = head;
-    for(int i=0; current != NULL; i++){
+    for(int i=0; i<index; i++){
+        if(current == NULL) return;
+        
         argv[i] = current->value;
         current = current->next;
     }

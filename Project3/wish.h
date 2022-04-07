@@ -28,7 +28,7 @@ void exitShell();
 Node_t* addToList(Node_t* head, char* value);
 char* getValue(Node_t* head, int index);
 void removeFromList(Node_t* head, char* value);
-void getArray(Node_t* head, char* argv[]);
+void getArray(Node_t* head, char* argv[], int);
 Node_t* freeList(Node_t* head);
 
 
@@ -39,6 +39,7 @@ int changeDirectory(Node_t*);
 int setPath(Node_t*, Node_t*);
 int handleShellCommands(Node_t*, Node_t*);
 int checkPath(Node_t*, Node_t*);
-int handleExternalCommands(Node_t*, Node_t*, int*);
+int handleExternalCommands(Node_t*, Node_t*, int, int);
+int handleTokenInput(Node_t*, Node_t*);
 
 #endif // !

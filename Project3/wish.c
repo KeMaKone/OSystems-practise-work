@@ -93,10 +93,13 @@ int checkPath(Node_t* tokens, Node_t* path){
     return(-1);
 }
 
-int handleExternalCommands(Node_t* tokens, Node_t* path, int* bgFlag){
+int handleExternalCommands(Node_t* tokens, Node_t* path, int bgFlag, int index){
     int pid;
     char* argv[PATHLENGTH];
-    getArray(tokens, argv);
+
+    //empty argv
+    memset(argv, 0, sizeof(argv));
+    getArray(tokens, argv, index);
 
     //fork
     switch(pid = fork()){
@@ -113,13 +116,55 @@ int handleExternalCommands(Node_t* tokens, Node_t* path, int* bgFlag){
     return(0);
 }
 
+int handleTokenInput(Node_t* tokens, Node_t* path){
+    int bgFlag = 0;
+    int length = 0;
+
+    //save previous stdin and stdout
+    int oldStdin = dup(STDIN_FILENO);
+    int oldStdout = dup(STDOUT_FILENO);
+
+    //Go through the tokens, split and call commands
+    for(Node_t* tmp = tokens; tmp != NULL; tmp = tmp->next){
+        if(strcmp(tmp->value, "&") == 0){
+            bgFlag = 1;
+            handleTokenInput(tmp->next, path);
+            break;
+        } else if(strcmp(tmp->value, ">") == 0){
+            if(tmp->next == NULL){
+                printf("No file specified.\n");
+                return(1);
+            }
+            if(dup2(open(tmp->next->value, O_WRONLY | O_CREAT | O_TRUNC, 0644), 1) == -1) errorHandle();
+            break;
+        } else if(strcmp(tmp->value, "<") == 0){
+            if(tmp->next == NULL){
+                printf("No file specified.\n");
+                return(1);
+            }
+            if(dup2(open(tmp->next->value, O_RDONLY), 0) == -1) errorHandle();
+            break;
+        }
+        length++;
+    }
+    if(tokens == NULL) return(0);
+
+    if(handleShellCommands(tokens, path) != 0){
+        handleExternalCommands(tokens, path, bgFlag, length);
+    }
+
+    //restore stdin and stdout
+    dup2(oldStdin, STDIN_FILENO);
+    dup2(oldStdout, STDOUT_FILENO);
+    return(0);
+}
+
 //shell 
 int main(){
     char inputBuffer[BUFSIZE]; 
     Node_t* tokens = NULL;  
     Node_t* path = NULL; 
     int iaFlag = 1;
-    int bgFlag = 0;
 
     //clear arrays
     memset(inputBuffer, 0, BUFSIZE*sizeof(char));
@@ -139,12 +184,12 @@ int main(){
         readInput(inputBuffer, stdin);
         tokens = parseInput(inputBuffer, tokens);
 
-        if(handleShellCommands(tokens, path) != 0){
-            handleExternalCommands(tokens, path, &bgFlag);
-        }
+        handleTokenInput(tokens, path);
 
         //clearing buffers
         memset(inputBuffer, 0, BUFSIZE*sizeof(char));
         tokens = freeList(tokens);
+
+        puts("");
     }
 }
