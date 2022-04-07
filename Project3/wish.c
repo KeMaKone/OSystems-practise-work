@@ -160,12 +160,35 @@ int handleTokenInput(Node_t* tokens, Node_t* path){
 }
 
 //shell 
-int main(){
+int main(int argc, char* argv[]){
+    //set up the path
     char inputBuffer[BUFSIZE]; 
     Node_t* tokens = NULL;  
     Node_t* path = NULL; 
     int iaFlag = 1;
+    int oldStdin = dup(STDIN_FILENO);
 
+
+    if(argc > 2){
+        printf("Too many arguments.\n");
+        return(1);
+    } else if (argc == 2){
+        if(strcmp(argv[1], "-h") == 0){
+            helpText();
+            return(0);
+        } else {
+            iaFlag = 0;
+            FILE* fp;
+            if((fp = fopen(argv[1], "r")) == NULL){
+                printf("File not found.\n");
+                return(1);
+            };
+            int fnum = fileno(fp);
+            if(fnum == -1) errorHandle();
+            dup2(fnum, STDIN_FILENO);
+        }
+    }
+    
     //clear arrays
     memset(inputBuffer, 0, BUFSIZE*sizeof(char));
 
@@ -173,7 +196,8 @@ int main(){
 
     signal(SIGALRM, autoLogout);
 
-    welcomeText();
+
+    if(iaFlag != 0) welcomeText();
 
     //shell loop
     while(1){
@@ -181,7 +205,11 @@ int main(){
         
         if(iaFlag != 0) printf(PROMPT);
 
-        readInput(inputBuffer, stdin);
+        if (readInput(inputBuffer, stdin) == -1){
+            printf("File has been processed\n");
+            exit(0);
+
+        };
         tokens = parseInput(inputBuffer, tokens);
 
         handleTokenInput(tokens, path);
@@ -192,4 +220,6 @@ int main(){
 
         puts("");
     }
+    //return stdin to normal
+    dup2(oldStdin, STDIN_FILENO);
 }
