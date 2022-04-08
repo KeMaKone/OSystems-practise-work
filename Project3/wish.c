@@ -20,12 +20,13 @@ int readInput(char* buffer, FILE* fp){
 
 //parses the input with strsep returns the amount of tokens
 Node_t* parseInput(char* buffer, Node_t *tokens){
-    int i;
     char* token;
     //remove the newline character
-    buffer[strlen(buffer)-1] = '\0';
-    for(i = 0; (token = strsep(&buffer, " ")) != NULL; i++){
+    //buffer[strlen(buffer)-1] = '\0';
+    token = strtok(buffer, " \f\n\r\t\v");
+    while(token  != NULL){
         tokens = addToList(tokens, token);
+        token = strtok(NULL, " \f\n\r\t\v");
     }
 
     return tokens;
