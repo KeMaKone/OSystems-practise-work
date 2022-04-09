@@ -7,8 +7,22 @@ Sivu jokaisesta valitusta osiosta.
 
 # Project 3: Unix Shell
 
-Path could be done with envpath which would be better and easier coding.
-Total time spent on the code would be about 8 hours. 
+Time spent:
+Total time spent on the code would be about 8 hours.
+
+Thoughts about the project instruction:
+The introduction of a path into this task was unnecessary as it promotes a bad coding habit of rewriting a perfectly fine system as path is already implemented in environment variables. 
+
+Thoughts about the code:
+The goal for this project for me would be keep the code readable and easy to understand. To do this I used abstraction and tried to keep indendation low.
+
+The usage of linked lists for handling tokens and path was a late change in the development cycle. Due to this there are few unnecessary mallocs as I could have implemented a value change for already allocated nodes but freeing the list and allocating new nodes was easier change from an array.
+
+Sources:
+For this project I didn't use external sources other than the depatable GitHub Copilot, and documentation. This is due to the fact that from my experience the examples given are not the best and I would rather learn from my own experience. 
+
+Github Copilot:
+GitHub Copilot wasn't very helpful when doing this project as it thinks strings are their own datatype, and not an array of chars. Some suggestions when writing code dealing with linked lists were clearly snippets and not truely fitted for the project at hand, which lead to lot of null pointer errors or reading random memory data. Most useful it was when refractoring the code as it had some data to go on and when implementing the headerfile. 
 
 
 # Project 4: Kernel Hacking
