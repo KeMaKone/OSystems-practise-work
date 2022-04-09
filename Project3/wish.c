@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <signal.h>
 #include <wait.h>
 #include <fcntl.h>
 #include <time.h>
@@ -20,10 +21,8 @@ int readInput(char* buffer, FILE* fp){
 
 //parses the input with strsep returns the amount of tokens
 Node_t* parseInput(char* buffer, Node_t *tokens){
-    char* token;
-    //remove the newline character
-    //buffer[strlen(buffer)-1] = '\0';
-    token = strtok(buffer, " \f\n\r\t\v");
+    char* token = strtok(buffer, " \f\n\r\t\v");
+
     while(token  != NULL){
         tokens = addToList(tokens, token);
         token = strtok(NULL, " \f\n\r\t\v");
@@ -202,7 +201,7 @@ int main(int argc, char* argv[]){
 
     //shell loop
     while(1){
-        //alarm(LOGOUTITME); //autologout
+        alarm(LOGOUTITME); //autologout
         
         if(iaFlag != 0) printf(PROMPT);
 
