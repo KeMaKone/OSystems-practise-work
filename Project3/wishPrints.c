@@ -23,7 +23,7 @@ void helpText(){
     return;
 }
 
-void exitShell(){
+void exitShellMsg(){
     printf("Exiting shell...\n");
-    exit(0);
+    return;
 }

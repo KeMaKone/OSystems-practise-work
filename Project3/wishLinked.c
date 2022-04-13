@@ -25,6 +25,10 @@ char* getValue(Node_t* head, int index){
     Node_t* current = head;
     for(int i=0; i<index; i++){
         current = current->next;
+        if(current == NULL){
+            return NULL;
+        }
+
     }
     return current->value;
 }
@@ -62,8 +66,13 @@ void removeFromList(Node_t* head, char* value){
 }
 
 //free list memory
-Node_t* freeList(Node_t* head){
+Node_t* freeList(Node_t* head, Node_t* previous){
     Node_t* current = head;
+
+    if(previous != NULL){
+        previous->next = NULL;
+    }
+    
     while(current != NULL){
         Node_t* temp = current;
         current = current->next;

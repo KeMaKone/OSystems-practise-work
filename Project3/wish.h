@@ -21,18 +21,19 @@ typedef struct node_t {
 void autoLogout();
 void welcomeText();
 void helpText();
-void errorHandle();
-void exitShell();
+void exitShellMsg();
 
 //wishLinked
-Node_t* addToList(Node_t* head, char* value);
-char* getValue(Node_t* head, int index);
-void removeFromList(Node_t* head, char* value);
-void getArray(Node_t* head, char* argv[], int);
-Node_t* freeList(Node_t* head);
-
+Node_t* addToList(Node_t*, char*);
+char* getValue(Node_t*, int);
+void removeFromList(Node_t*, char*);
+void getArray(Node_t*, char* [], int);
+Node_t* freeList(Node_t*, Node_t* );
 
 //wish
+void errorHandle(char*);
+void exitHandle(Node_t*, Node_t*);
+void errorExitHandle(Node_t*, Node_t*, char*);
 int readInput(char*, FILE*);
 Node_t* parseInput(char*, Node_t*);
 int changeDirectory(Node_t*);
