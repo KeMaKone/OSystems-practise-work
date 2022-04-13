@@ -9,15 +9,9 @@ To turn in your work, include a short summary of what you did and screenshots of
 Otherwise the scoring is as follows:
 
 -Everything submitted compiles and works at least on some level. (Required, 2 points)
-
-
 -The documentation is appropriate, correct and the repository is available (Required, 0 points)
-
 -The documentation is detailed, and the provided source code is reasonably well commented. (1 point)
-
-
 -You can reset the counter with an argument (1 point)
-
 -You can select between the number of different system call which to follow (1 point)
 
 -------------------------------------
@@ -34,7 +28,9 @@ Background
 If you haven't watched the
 https://youtu.be/vR6z2QGcoo8
 
-, you might want to read this background section.
+Video contains a detailed walk-through of all the things you need to know to unpack xv6, build it, and modify it to make this project successful.
+One good way to start hacking inside a large code base is to find something similar to what you want to do and to carefully copy/modify that. Here, you should find some other system call, like getpid() (or any other simple call). Copy it in all the ways you think are needed, and then modify it to do what you need.
+
 More information about xv6, including a very useful book written by the MIT folks who built xv6, is available here. Do note, however, that we use a slightly older version of xv6 (for various pedagogical reasons), and thus the book may not match our code base exactly.
 
 Your System Call
@@ -46,12 +42,6 @@ int getreadcount(void)
 Your system call returns the value of a counter (perhaps called readcount or something like that) which is incremented every time any process calls the read() system call. That's it!
 
 Tips
-
-Watch this
-https://youtu.be/vR6z2QGcoo8
-
--- it contains a detailed walk-through of all the things you need to know to unpack xv6, build it, and modify it to make this project successful.
-One good way to start hacking inside a large code base is to find something similar to what you want to do and to carefully copy/modify that. Here, you should find some other system call, like getpid() (or any other simple call). Copy it in all the ways you think are needed, and then modify it to do what you need.
 
 Most of the time will be spent on understanding the code. There shouldn't be a whole lot of code added.
 
