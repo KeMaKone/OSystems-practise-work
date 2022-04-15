@@ -4,6 +4,17 @@ Sivu jokaisesta valitusta osiosta.
 ## Valitut projektit:
 # Project 2: Unix Utilities
 
+Time spent:
+Total time spent on all of the utilites was about 7 hours.
+
+Thoughts about the project instruction:
+The instructions were clear on how diffirent utilities should work and they specified what the output of each program should look like.
+
+Thoughts about the code:
+I tried keeping the code as clean as possible with comments and spacing. Maybe some comments could be left out as they are a bit trivial but at least all functionality is explained.
+
+Sources:
+I mostly sticked to prior knowledge and the documentation that was recommended on the instructions. Some of the code is completed using Github Copilot but it proved to be a bit questionable in some of it's recommendations as they needed some filling in. Also converting 4-byte integer back to normal ASCII-format was from a Cpgrogramming messageboard [https://cboard.cprogramming.com/c-programming/87461-how-read-4-consecutive-bytes-integer.html].
 
 # Project 3: Unix Shell
 
