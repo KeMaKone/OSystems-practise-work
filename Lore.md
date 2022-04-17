@@ -27,3 +27,9 @@ GitHub Copilot wasn't very helpful when doing this project as it thinks strings 
 
 # Project 4: Kernel Hacking
 
+Konsta:
+For me I had trouble getting the xv6-OS to run. For to get the codebase to compile I had to edit (uncomment) a line 1461 in usertests.c as it would lead to an error of string overflow.
+
+After making the necessary changes, I got the code to compile and to the next hurdle of the project would be running the code in QEMU as the operating system got immediadly stuck on "Booting from Hard Disk.." line. Next trick I would try to do is downgrading binutils to version 35.1 due to a suggestion in forums regarding this problem. The suggestion did not work and I was still stuck on getting the kernel to run. 
+
+As I had spent many hours debugging and getting the Operating System to work not even starting on the ask at hand I decided to hand over installation to Tuomas.
