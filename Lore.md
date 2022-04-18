@@ -44,3 +44,6 @@ For me I had trouble getting the xv6-OS to run. For to get the codebase to compi
 After making the necessary changes, I got the code to compile and to the next hurdle of the project would be running the code in QEMU as the operating system got immediadly stuck on "Booting from Hard Disk.." line. Next trick I would try to do is downgrading binutils to version 35.1 due to a suggestion in forums regarding this problem. The suggestion did not work and I was still stuck on getting the kernel to run. 
 
 As I had spent many hours debugging and getting the Operating System to work not even starting on the ask at hand I decided to hand over installation to Tuomas.
+
+Tuomas:
+Copying the code xv6-OS from github and compiling it didn't cause any errors with me using `make` command. After that I tried running the os in the qemu emulator using `make qemu` command but it didn't work notifying the error: `Couldn't find a working QEMU executable.` eventhough I had just installed qemu. So I did some chages on the Makefile in line 54 by uncommenting the part `QEMU = qemu-system-x86_64`. Trying the command the system notified to install qemu-system-x86_64 so I did. After this the os worked as it should on the emulator.
