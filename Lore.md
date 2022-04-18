@@ -46,4 +46,23 @@ After making the necessary changes, I got the code to compile and to the next hu
 As I had spent many hours debugging and getting the Operating System to work not even starting on the ask at hand I decided to hand over installation to Tuomas.
 
 Tuomas:
+
+Installation xv6-OS:
 Copying the code xv6-OS from github and compiling it didn't cause any errors with me using `make` command. After that I tried running the os in the qemu emulator using `make qemu` command but it didn't work notifying the error: `Couldn't find a working QEMU executable.` eventhough I had just installed qemu. So I did some chages on the Makefile in line 54 by uncommenting the part `QEMU = qemu-system-x86_64`. Trying the command the system notified to install qemu-system-x86_64 so I did. After this the os worked as it should on the emulator.
+
+A rundown of the kernel hacking can be found in the Project 4 folder.
+
+Time spent:
+Total time spent on installing and coding was about 5 hours.
+
+Thoughts about the project instruction:
+The instructions were quite short compared to the other projects but with the background video I think they were sufficient. Maybe the installation could have been explained in more detail.
+
+Thoughts about the code:
+This project didn't need that much coding mainly just exploring the original code and adding in to it. So I think the coding part was quite easy.
+
+Sources:
+Biggest source was the background video provided in the project instructions. Other sources I used for this project were a GeeksforGeeks article about the subject and a youtube video about adding a system call. Links for them are listed below:
+
+https://www.geeksforgeeks.org/xv6-operating-system-adding-a-new-system-call/
+https://www.youtube.com/watch?v=21SVYiKhcwM&ab_channel=TongYu
