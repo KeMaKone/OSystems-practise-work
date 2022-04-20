@@ -29,3 +29,6 @@ After that I added the function sys_getreadcount below the sys_read which return
 
 To test this I created a simple file called getreadcount.c that makes this system call and prints the results. 
 Then I added the program to the Makefile so it works in the xv6-OS.
+
+# Compiling and testing
+You can try out the modified OS by first cloning the original OS from https://github.com/mit-pdos/xv6-public. Replace the original files with the modified versions in the hacked folder. After that install qemu using command `sudo apt install qemu-system-x86`. Then run `make` and after that run the OS in the qemu-emulator with the command `make qemu`. When the OS is running you can use `ls` to see that the getreadcount program is there and with the command getreadcount you can use the system call.
