@@ -67,6 +67,7 @@ sys_dup(void)
 }
 
 static int readcount = 0;
+static int writecount = 0;
 
 int
 sys_read(void)
@@ -83,7 +84,35 @@ sys_read(void)
 int
 sys_getreadcount(void)
 {
-  return readcount;
+  int i;
+  int e;
+  argint(1, &e);
+  argint(0, &i);
+  if(i == 1)
+  {
+    if(e ==1)
+    {
+      readcount = 0;
+      return readcount;
+    }
+    if(e == 0)
+    {
+      return readcount;
+    }
+  }
+  if(i == 2)
+  {
+    if(e == 1)
+    {
+      writecount = 0;
+      return writecount;
+    }
+    if(e == 0)
+    {
+      return writecount;
+    }
+  }
+  return -1;
 }
 
 int
@@ -92,7 +121,7 @@ sys_write(void)
   struct file *f;
   int n;
   char *p;
-
+  writecount++;
   if(argfd(0, 0, &f) < 0 || argint(2, &n) < 0 || argptr(1, &p, n) < 0)
     return -1;
   return filewrite(f, p, n);
