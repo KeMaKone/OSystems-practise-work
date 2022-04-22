@@ -65,3 +65,6 @@ Biggest source was the background video provided in the project instructions. Ot
 
 https://www.geeksforgeeks.org/xv6-operating-system-adding-a-new-system-call/
 https://www.youtube.com/watch?v=21SVYiKhcwM&ab_channel=TongYu
+
+Additional points:
+I modified the function so the syscall takes in two integers. With these you can choose from write or read counter and reset or track them.
