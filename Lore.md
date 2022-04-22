@@ -1,7 +1,6 @@
 ## Lore
-Sivu jokaisesta valitusta osiosta. 
 
-## Valitut projektit:
+## Chosen projects:
 # Project 2: Unix Utilities
 
 Time spent:
